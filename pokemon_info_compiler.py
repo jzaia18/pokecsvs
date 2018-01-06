@@ -1,9 +1,9 @@
 alldata = open('alldata.csv','w')
 
 pokemain  = open('pokemon.csv','r').read().split('\n')
-pokestats = open('pokemon_statsNEW.csv','r').read().split('\n')
-poketypes = open('pokemon_typesNEW.csv','r').read().split('\n')
-
+pokestats = open('pokemon_stats.csv','r')#.read().split('\n') #has been replaced
+poketypes = open('pokemon_types.csv','r')#.read().split('\n') #has been replaced
+learnset  = open('pokemon_moves.csv','r').read().split('\n')
 
 ##print pokemain[0]
 ##print pokestats[0]
@@ -38,6 +38,7 @@ poketypes = open('pokemon_typesNEW.csv','r').read().split('\n')
 ##    i+=1
 ##
 ##out.close()
+poketypes = open('pokemon_typesNEW.csv','r').read().split('\n')
 
 ## STEP TWO: fix stats
 ##out = open('pokemon_statsNEW.csv','w')
@@ -60,8 +61,38 @@ poketypes = open('pokemon_typesNEW.csv','r').read().split('\n')
 ##        break
 ##
 ##out.close()
+pokestats = open('pokemon_statsNEW.csv','r').read().split('\n')
 
-##STEP THREE: compile all data
+##STEP THREE: learnset
+for i in xrange(len(learnset)):
+    learnset[i] = learnset[i].split(',')
+learnset.pop()
+print learnset.pop(0)
+
+out = open('pokemon_movesNEW.csv', 'w')
+out.write('pokemon_id, move_id\n')
+i = 0
+curr_num = 1
+curr_str = ''
+while i < len(learnset):
+    if int(learnset[i][1]) != 18:
+        i+=1
+        continue
+    if int(learnset[i][0]) != curr_num:
+        #print '%s, "%s"\n'%(curr_num, curr_str[1:])
+        out.write('%s, "%s"\n'%(curr_num, curr_str[1:]))
+        curr_num+=1
+        curr_str=''
+    else:
+        curr_str += ',' + learnset[i][2]
+    i+=1
+    if curr_num > 721:
+        break
+
+out.close()
+
+
+##STEP FOUR: compile all data
 #print len(pokemain), len(pokestats), len(poketypes)
 #limit data in pokemain
 pokemain = pokemain[0:722]
