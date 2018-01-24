@@ -80,39 +80,41 @@ pokestats = open('pokemon_statsNEW.csv','r').read().split('\n')
 ##out.close()
 pokeevos = open('pokemon_speciesNEW.csv','r').read().split('\n')
 
-#learnset  = open('pokemon_moves.csv','r').read().split('\n')
+learnset  = open('pokemon_moves.csv','r').read().split('\n')
 ##STEP FOUR: learnset
-##for i in xrange(len(learnset)):
-##    learnset[i] = learnset[i].split(',')
-##learnset.pop()
-##print learnset.pop(0)
-##
-##out = open('pokemon_movesNEW.csv', 'w')
-##out.write('pokemon_id,move_id\n')
-##i = 0
-##curr_num = 1
-##curr_str = ''
-##god_damn_this = ['']
-##while i < len(learnset):
-##    if int(learnset[i][1]) != 18:
-##        i+=1
-##        continue
-##    if int(learnset[i][0]) != curr_num:
-##        if 0 < int(pokeevos[curr_num].split(',')[1]) < len(god_damn_this):#add prevolution moves
-##            #print pokeevos[curr_num].split(',')
-##            curr_str = curr_str + god_damn_this[int(pokeevos[curr_num].split(',')[1])]
-##        #print '%s, "%s"\n'%(curr_num, curr_str[1:])
-##        out.write('%s,"%s"\n'%(curr_num, curr_str[1:]))
-##        curr_num+=1
-##        god_damn_this.append(curr_str)
-##        curr_str=''
-##    else:
-##        curr_str += ';' + learnset[i][2]
-##    i+=1
-##    if curr_num > 721:
-##        break
-##
-##out.close()
+for i in xrange(len(learnset)):
+    learnset[i] = learnset[i].split(',')
+learnset.pop()
+print learnset.pop(0)
+
+out = open('pokemon_movesNEW.csv', 'w')
+out.write('pokemon_id,move_id\n')
+i = 0
+curr_num = 1
+curr_str = ''
+god_damn_this = ['']
+while i < len(learnset):
+    if int(learnset[i][1]) != 18:
+        i+=1
+        continue
+    if int(learnset[i][0]) != curr_num:
+        if 0 < int(pokeevos[curr_num].split(',')[1]) < len(god_damn_this):#add prevolution moves
+            #print pokeevos[curr_num].split(',')
+            #print curr_str
+            curr_str = curr_str + god_damn_this[int(pokeevos[curr_num].split(',')[1])]
+        #print '%s, "%s"\n'%(curr_num, curr_str[1:])
+        out.write('%s,"%s"\n'%(curr_num, curr_str[1:]))
+        curr_num+=1
+        god_damn_this.append(curr_str)
+        curr_str=''
+    else:
+        if not ';' + learnset[i][2] in curr_str:
+            curr_str += ';' + learnset[i][2]
+    i+=1
+    if curr_num > 721:
+        break
+
+out.close()
 learnset  = open('pokemon_movesNEW.csv','r').read().split('\n')
 
 
