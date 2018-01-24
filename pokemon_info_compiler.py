@@ -1,9 +1,6 @@
 alldata = open('alldata.csv','w')
 
 pokemain  = open('pokemon.csv','r').read().split('\n')
-pokestats = open('pokemon_stats.csv','r')#.read().split('\n') #has been replaced
-poketypes = open('pokemon_types.csv','r')#.read().split('\n') #has been replaced
-learnset  = open('pokemon_moves.csv','r').read().split('\n')
 
 ##print pokemain[0]
 ##print pokestats[0]
@@ -14,6 +11,7 @@ learnset  = open('pokemon_moves.csv','r').read().split('\n')
 ##print len(pokemain), len(pokestats), len(poketypes)
 ##print pokemain[810]
 
+#pokestats = open('pokemon_stats.csv','r').read().split('\n') #has been replaced
 #### STEP ONE: fix types
 ##for i in xrange(len(poketypes)):
 ##    poketypes[i] = poketypes[i].split(',')
@@ -40,6 +38,8 @@ learnset  = open('pokemon_moves.csv','r').read().split('\n')
 ##out.close()
 poketypes = open('pokemon_typesNEW.csv','r').read().split('\n')
 
+
+#poketypes = open('pokemon_types.csv','r').read().split('\n') #has been replaced
 ## STEP TWO: fix stats
 ##out = open('pokemon_statsNEW.csv','w')
 ##out.write('pokemon_id, hp, attack, defense, spatk, spdef, speed\n')
@@ -63,33 +63,57 @@ poketypes = open('pokemon_typesNEW.csv','r').read().split('\n')
 ##out.close()
 pokestats = open('pokemon_statsNEW.csv','r').read().split('\n')
 
-##STEP THREE: learnset
-for i in xrange(len(learnset)):
-    learnset[i] = learnset[i].split(',')
-learnset.pop()
-print learnset.pop(0)
 
-out = open('pokemon_movesNEW.csv', 'w')
-out.write('pokemon_id, move_id\n')
-i = 0
-curr_num = 1
-curr_str = ''
-while i < len(learnset):
-    if int(learnset[i][1]) != 18:
-        i+=1
-        continue
-    if int(learnset[i][0]) != curr_num:
-        #print '%s, "%s"\n'%(curr_num, curr_str[1:])
-        out.write('%s, "%s"\n'%(curr_num, curr_str[1:]))
-        curr_num+=1
-        curr_str=''
-    else:
-        curr_str += ',' + learnset[i][2]
-    i+=1
-    if curr_num > 721:
-        break
+#pokeevos = open('pokemon_species.csv','r').read().split('\n')
+##STEP THREE: evolutions
+##out = open('pokemon_speciesNEW.csv','w')
+##
+##for i in xrange(len(pokeevos)):
+##    pokeevos[i] = pokeevos[i].split(',')
+##pokeevos.pop()
+##
+##for each in pokeevos:
+##    if not each[3]:
+##        each[3]=0
+##    out.write('%s,%s,%s\n'%(each[0],each[3],each[4]))
+##
+##out.close()
+pokeevos = open('pokemon_speciesNEW.csv','r').read().split('\n')
 
-out.close()
+#learnset  = open('pokemon_moves.csv','r').read().split('\n')
+##STEP FOUR: learnset
+##for i in xrange(len(learnset)):
+##    learnset[i] = learnset[i].split(',')
+##learnset.pop()
+##print learnset.pop(0)
+##
+##out = open('pokemon_movesNEW.csv', 'w')
+##out.write('pokemon_id,move_id\n')
+##i = 0
+##curr_num = 1
+##curr_str = ''
+##god_damn_this = ['']
+##while i < len(learnset):
+##    if int(learnset[i][1]) != 18:
+##        i+=1
+##        continue
+##    if int(learnset[i][0]) != curr_num:
+##        if 0 < int(pokeevos[curr_num].split(',')[1]) < len(god_damn_this):#add prevolution moves
+##            #print pokeevos[curr_num].split(',')
+##            curr_str = curr_str + god_damn_this[int(pokeevos[curr_num].split(',')[1])]
+##        #print '%s, "%s"\n'%(curr_num, curr_str[1:])
+##        out.write('%s,"%s"\n'%(curr_num, curr_str[1:]))
+##        curr_num+=1
+##        god_damn_this.append(curr_str)
+##        curr_str=''
+##    else:
+##        curr_str += ';' + learnset[i][2]
+##    i+=1
+##    if curr_num > 721:
+##        break
+##
+##out.close()
+learnset  = open('pokemon_movesNEW.csv','r').read().split('\n')
 
 
 ##STEP FOUR: compile all data
@@ -97,9 +121,11 @@ out.close()
 #limit data in pokemain
 pokemain = pokemain[0:722]
 
-print pokemain[0]
-print pokestats[0]
-print poketypes[0]
+print 'Main:        ', pokemain[0]
+print 'Stats:       ', pokestats[0]
+print 'Types:       ', poketypes[0]
+print 'Evolutions:  ', pokeevos[0]
+print 'Learnsets:   ', learnset[0]
 
 
 for i in xrange(len(pokemain)):
@@ -113,9 +139,22 @@ for i in xrange(len(pokestats)):
     pokestats[i] = pokestats[i].split(',')
 pokestats.pop()
 
+for i in xrange(len(pokeevos)):
+    pokeevos[i] = pokeevos[i].split(',')
+pokeevos.pop()
+
+for i in xrange(len(learnset)):
+    x = learnset[i].split(',')[0]
+    learnset[i] = learnset[i][len(x)+1:]
+learnset.pop()
+
 for i in xrange(len(pokemain)):
-    alldata.write('%s, %s, '%(pokemain[i][0],pokemain[i][1]))
-    alldata.write('%s, %s, '%(poketypes[i][1],poketypes[i][2]))
-    alldata.write('%s, %s, %s, %s, %s, %s\n'%(pokestats[i][1], pokestats[i][2], pokestats[i][3], pokestats[i][4], pokestats[i][5], pokestats[i][6]))
+    alldata.write('%s,%s,'%(pokemain[i][0],pokemain[i][1]))
+    alldata.write('%s,%s,'%(poketypes[i][1],poketypes[i][2]))
+    alldata.write('%s,%s,%s,%s,%s,%s,'%(pokestats[i][1], pokestats[i][2], pokestats[i][3], pokestats[i][4], pokestats[i][5], pokestats[i][6]))
+    alldata.write('%s,%s,'%(pokeevos[i][1], pokeevos[i][2]))
+    alldata.write('%s\n'%(learnset[i]))
 
 alldata.close()
+
+print "DONE!"
