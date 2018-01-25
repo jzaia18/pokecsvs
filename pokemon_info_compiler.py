@@ -103,13 +103,22 @@ while i < len(learnset):
             #print curr_str
             curr_str = curr_str + god_damn_this[int(pokeevos[curr_num].split(',')[1])]
         #print '%s, "%s"\n'%(curr_num, curr_str[1:])
-        out.write('%s,"%s"\n'%(curr_num, curr_str[1:]))
+
+        ## REMOVE DUPLICATES
+        curr_str = list(set(curr_str[1:].split(';')))
+        curr_str.sort()
+        curr_str = ';'.join(curr_str)
+            
+        out.write('%s,"%s"\n'%(curr_num, curr_str))
         curr_num+=1
-        god_damn_this.append(curr_str)
+        god_damn_this.append(';'+curr_str)
         curr_str=''
     else:
         if not ';' + learnset[i][2] in curr_str:
-            curr_str += ';' + learnset[i][2]
+            to_add = learnset[i][2]
+            while len(to_add) < 3:
+                to_add = '0' + to_add
+            curr_str += ';' + to_add
     i+=1
     if curr_num > 721:
         break
